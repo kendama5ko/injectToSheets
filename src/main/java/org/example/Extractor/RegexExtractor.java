@@ -17,7 +17,7 @@ public class RegexExtractor implements DataExtractor{
      */
     @Override
     public String[] extractData(String text) {
-        String[] result = new String[11];
+        String[] result = new String[12];
 
         // 点数
         Pattern scorePattern = Pattern.compile("(\\d{2,}\\.\\d{3})点");
@@ -97,6 +97,9 @@ public class RegexExtractor implements DataExtractor{
         if (reportMatcher.find()) {
             result[10] = reportMatcher.group(1).trim();  // 分析レポート
         }
+        // 日付を取得
+        LocalDate systemDate = LocalDate.now();
+        result[11] = String.valueOf(systemDate);
 
         return result;
     }
