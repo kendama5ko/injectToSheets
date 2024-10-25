@@ -6,8 +6,9 @@ import org.example.googleapi.service.SheetsService;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class SheetsWriter implements DataWriter{
 
@@ -32,9 +33,12 @@ public class SheetsWriter implements DataWriter{
         try {
             Sheets sheets = sheetsService.createSheets();
 
-            // 配列の各要素をセルにセットする
+            // dataの中身をdoubleかStringに変換する
+            List<Object> rowData = convertData(data);
+
+            // 配列の各要素をセルにセットする(Arrays.asListよりもCollections.singletonListの方が軽量）
             ValueRange injectData =
-                    new ValueRange().setValues(Collections.singletonList(Arrays.asList(data)));
+                    new ValueRange().setValues(Collections.singletonList(rowData));
 
             // Sheetsからスプレッドシートに書き込む
             sheets.spreadsheets().values()
@@ -47,6 +51,29 @@ public class SheetsWriter implements DataWriter{
             e.printStackTrace();
         }
 
+    }
+
+    public List<Object> convertData(String[] data) {
+        List<Object> rowData = new ArrayList<>();
+
+        // dataの要素のnullチェック
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] == null) {
+                data[i] = "no data";
+            }
+        }
+
+        for (String item : data) {
+            // 数値かどうかの判定を行い、数値であればDoubleに変換、そうでなければそのまま文字列
+            try {
+                double numericValue = Double.parseDouble(item);
+                rowData.add(numericValue); // 数値として追加
+            } catch (NumberFormatException e) {
+                rowData.add(item); // 文字列として追加
+            }
+        }
+
+        return rowData;
     }
 
 }
