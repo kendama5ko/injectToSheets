@@ -91,12 +91,13 @@ public class RegexExtractor implements DataExtractor{
         }
 
         // 分析レポート
-        Pattern reportPattern = Pattern.compile("分析レポート\\s*(.*?)\\s*\n音程",
+        Pattern reportPattern = Pattern.compile("分析レポート\\s*(.*?)\\s*音程",
                 Pattern.DOTALL);
         Matcher reportMatcher = reportPattern.matcher(text);
         if (reportMatcher.find()) {
             result[10] = reportMatcher.group(1).trim();  // 分析レポート
         }
+
         // 日付を取得
         LocalDate systemDate = LocalDate.now();
         result[11] = String.valueOf(systemDate);
