@@ -37,16 +37,9 @@ public class SheetsWriter implements DataWriter {
             // D4:N4のデータを取得
             List<List<Object>> dataOfCells = getData(RANGE);
 
-            // データがない場合
-            if (dataOfCells == null || dataOfCells.isEmpty()) {
-                System.out.println("D4:N4には既にデータがありません。行は追加せずデータを書き込みます。");
+            // データがあれば行を挿入、なければそのままデータを書き込む
+            insertRowIfDataExists(dataOfCells);
 
-                // データがある場合
-            } else {
-                // 新しい行を追加
-                insertRowAbove(3, 4);
-                System.out.println("D4:N4にはデータがあります。行を追加してデータを書き込みます。");
-            }
             // dataの中身をdoubleかStringに変換する
             List<Object> rowData = convertData(data);
 
@@ -65,6 +58,25 @@ public class SheetsWriter implements DataWriter {
             e.printStackTrace();
         }
 
+    }
+    /**
+     * 受け取ったデータの中身がnullであれば何もしない
+     * データがnullでなければ、insertRowAboveメソッドを呼び出し新たに行を挿入する
+     *
+     * @param dataOfCells getDataメソッドで得た指定した範囲のデータ
+     * @throws IOException
+     */
+    private void insertRowIfDataExists(List<List<Object>> dataOfCells) throws IOException {
+        // データがない場合
+        if (dataOfCells == null || dataOfCells.isEmpty()) {
+            System.out.println("D4:N4には既にデータがありません。行は追加せずデータを書き込みます。");
+
+            // データがある場合
+        } else {
+            // 新しい行を追加
+            insertRowAbove(3, 4);
+            System.out.println("D4:N4にはデータがあります。行を追加してデータを書き込みます。");
+        }
     }
 
     /**
