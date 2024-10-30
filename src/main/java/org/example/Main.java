@@ -7,6 +7,7 @@ import org.example.googleapi.service.GoogleSheetsService;
 import org.example.googleapi.service.SheetsService;
 import org.example.googleapi.writer.DataWriter;
 import org.example.googleapi.writer.SheetsWriter;
+import org.example.ui.MainWindow;
 
 public class Main {
     public static void main(String[] args) {
@@ -48,8 +49,8 @@ public class Main {
         // sheetsServiceをDataWriterに渡す
         DataWriter writer = new SheetsWriter(sheetsService);
 
-        TextProcessor processor = new TextProcessor();
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.makeWindow(new TextProcessor(), new RegexExtractor(), writer);
 
-        processor.processText(inputText, new RegexExtractor(), writer);
     }
 }
