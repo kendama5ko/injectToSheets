@@ -63,13 +63,19 @@ public class MainWindow {
             processor.processText(inputText, new RegexExtractor(), writer);
         });
 
+        // delete button
+        JButton deleteButton = new JButton("削除");
+        deleteButton.addActionListener(e -> {
+            textArea.setText("");
+        });
+
         panel.add(scrollPane);
+        panel.add(deleteButton);
         panel.add(pasteButton);
         panel.add(executeButton);
 
         frame.add(panel);
         frame.setVisible(true);
-
 
     }
 }
